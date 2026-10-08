@@ -1,100 +1,70 @@
 {
   "projetos": [
     {
-      "id": "1",
-      "nome": "Sistema de Gestão Acadêmica",
-      "descricao": "Desenvolvimento de um sistema para gerenciamento acadêmico.",
-      "disciplina": "Engenharia de Software",
-      "criadoEm": "2026-08-01"
+    "id": "1",
+    "nome": "Gerenciador de Tarefas",
+    "descricao": "Projeto em equipe da disciplina",
+    "disciplina": "Desenvolvimento Frontend",
+    "criadoEm": "2026-10-01"
     },
     {
-      "id": "2",
-      "nome": "Aplicação Web",
-      "descricao": "Desenvolvimento de uma aplicação web utilizando tecnologias modernas.",
-      "disciplina": "Desenvolvimento Web",
-      "criadoEm": "2026-08-05"
+    "id": "2",
+    "nome": "Modelagem da Biblioteca",
+    "descricao": "Trabalho de modelagem de dados",
+    "disciplina": "Banco de Dados",
+    "criadoEm": "2026-10-02"
     }
-  ],
-  "tarefas": [
+    ],
+    "tarefas": [
     {
-      "id": "1",
-      "projetoId": "1",
-      "titulo": "Levantar requisitos",
-      "descricao": "Identificar os requisitos funcionais e não funcionais.",
-      "status": "concluida",
-      "prioridade": "alta",
-      "responsavel": "Gabriel",
-      "prazo": "2026-10-10"
+    "id": "1",
+    "projetoId": "1",
+    "titulo": "Criar o repositório",
+    "descricao": "Repositório da equipe no GitHub, com todos os integrantes",
+    "status": "concluida",
+    "prioridade": "alta",
+    "responsavel": "Ana",
+    "prazo": "2026-10-06"
     },
     {
-      "id": "2",
-      "projetoId": "1",
-      "titulo": "Criar diagrama de casos de uso",
-      "descricao": "Modelar os principais casos de uso do sistema.",
-      "status": "concluida",
-      "prioridade": "media",
-      "responsavel": "Pedro",
-      "prazo": "2026-10-12"
+    "id": "2",
+    "projetoId": "1",
+    "titulo": "Subir o json-server",
+    "descricao": "API local a partir do db.json",
+    "status": "em-andamento",
+    "prioridade": "alta",
+    "responsavel": "Bruno",
+    "prazo": "2026-10-06"
     },
     {
-      "id": "3",
-      "projetoId": "1",
-      "titulo": "Implementar cadastro de usuários",
-      "descricao": "Criar a funcionalidade de cadastro.",
-      "status": "em-andamento",
-      "prioridade": "alta",
-      "responsavel": "Felipe",
-      "prazo": "2026-10-20"
+    "id": "3",
+    "projetoId": "1",
+    "titulo": "Montar o quadro no GitHub Projects",
+    "descricao": "Colunas por status e uma tarefa por marco",
+    "status": "em-revisao",
+    "prioridade": "media",
+    "responsavel": "Carla",
+    "prazo": "2026-10-07"
     },
     {
-      "id": "4",
-      "projetoId": "2",
-      "titulo": "Criar estrutura da página",
-      "descricao": "Montar a estrutura inicial da aplicação.",
-      "status": "em-andamento",
-      "prioridade": "media",
-      "responsavel": "Lucas",
-      "prazo": "2026-10-15"
+    "id": "4",
+    "projetoId": "1",
+    "titulo": "Listar as tarefas na tela",
+    "descricao": "Primeira entrega do Marco 2",
+    "status": "a-fazer",
+    "prioridade": "media",
+    "responsavel": "Diego",
+    "prazo": "2026-10-14"
     },
     {
-      "id": "5",
-      "projetoId": "2",
-      "titulo": "Implementar tela de login",
-      "descricao": "Desenvolver a tela de autenticação.",
-      "status": "a-fazer",
-      "prioridade": "alta",
-      "responsavel": "Pedro",
-      "prazo": "2026-10-25"
-    },
-    {
-      "id": "6",
-      "projetoId": "2",
-      "titulo": "Revisar interface",
-      "descricao": "Verificar a interface e corrigir problemas encontrados.",
-      "status": "em-revisao",
-      "prioridade": "media",
-      "responsavel": "Lucas",
-      "prazo": "2026-10-22"
-    },
-    {
-      "id": "7",
-      "projetoId": "1",
-      "titulo": "Testar funcionalidades",
-      "descricao": "Executar testes das funcionalidades desenvolvidas.",
-      "status": "a-fazer",
-      "prioridade": "baixa",
-      "responsavel": "Gabriel",
-      "prazo": "2026-10-28"
-    },
-    {
-      "id": "8",
-      "projetoId": "2",
-      "titulo": "Finalizar documentação",
-      "descricao": "Organizar a documentação final do projeto.",
-      "status": "concluida",
-      "prioridade": "baixa",
-      "responsavel": "Felipe",
-      "prazo": "2026-10-30"
+    "id": "5",
+    "projetoId": "2",
+    "titulo": "Desenhar o diagrama ER",
+    "descricao": "Entidades livro, leitor e empréstimo",
+    "status": "a-fazer",
+    "prioridade": "baixa",
+    "responsavel": "Ana",
+    "prazo": "2026-10-20"
     }
   ]
 }
