@@ -1,44 +1,51 @@
+
 <script lang="ts">
-  import type { PageProps } from './$types'
+  let { params } = $props()
 
-  let { data }: PageProps = $props()
-
-  let tarefa = $derived(data.tarefa)
+  const tarefa = {
+    titulo: 'Criar página inicial',
+    descricao: 'Desenvolver a interface do projeto.',
+    status: 'Em andamento',
+    prioridade: 'Alta',
+    responsavel: 'Pedro',
+    prazo: '20/10/2026',
+    projeto: 'Gerenciador de Tarefas',
+    criadaEm: '10/10/2026'
+  }
 </script>
 
 <svelte:head>
-  <title>{tarefa.titulo} - Zenith</title>
+  <title>Detalhe da tarefa #{params.id}</title>
 </svelte:head>
 
-<a href="/">← Voltar para Tarefas</a>
+<main>
+  <a href="/">← Voltar</a>
 
-<h1>{tarefa.titulo}</h1>
+  <h1>Detalhe da tarefa</h1>
+  <p>ID da tarefa: {params.id}</p>
 
-<p>{tarefa.descricao}</p>
+  <section>
+    <h2>{tarefa.titulo}</h2>
+    <p>{tarefa.descricao}</p>
 
-<p>
-  <strong>Status:</strong>
-  {tarefa.status}
-</p>
+    <dl>
+      <dt>Status</dt>
+      <dd>{tarefa.status}</dd>
 
-<p>
-  <strong>Prioridade:</strong>
-  {tarefa.prioridade}
-</p>
+      <dt>Prioridade</dt>
+      <dd>{tarefa.prioridade}</dd>
 
-<p>
-  <strong>Responsável:</strong>
-  {tarefa.responsavel}
-</p>
+      <dt>Responsável</dt>
+      <dd>{tarefa.responsavel}</dd>
 
-<p>
-  <strong>Prazo:</strong>
-  {tarefa.prazo}
-</p>
+      <dt>Prazo</dt>
+      <dd>{tarefa.prazo}</dd>
 
-<p>
-  <strong>Projeto:</strong>
-  <a href={`/projetos/${tarefa.projetoId}`}>
-    Ver projeto
-  </a>
-</p>
+      <dt>Projeto</dt>
+      <dd>{tarefa.projeto}</dd>
+
+      <dt>Data de criação</dt>
+      <dd>{tarefa.criadaEm}</dd>
+    </dl>
+  </section>
+</main>
