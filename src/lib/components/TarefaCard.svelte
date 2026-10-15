@@ -1,13 +1,6 @@
 
 <script lang="ts">
-  type Tarefa = {
-    titulo: string
-    descricao: string
-    status: string
-    prioridade: string
-    responsavel: string
-    prazo: string
-  }
+  import type { Tarefa } from '../../tipos'
 
   let { tarefa }: { tarefa: Tarefa } = $props()
 </script>

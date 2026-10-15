@@ -1,34 +1,58 @@
 
 <script lang="ts">
-  let { params } = $props()
+  import { onMount } from 'svelte'
+  import { page } from '$app/state'
+  import { buscarTarefa } from '../../../api'
+  import type { Tarefa } from '../../../tipos'
 
-  const tarefa = {
-    titulo: 'Criar página inicial',
-    descricao: 'Desenvolver a interface do projeto.',
-    status: 'Em andamento',
-    prioridade: 'Alta',
-    responsavel: 'Pedro',
-    prazo: '20/10/2026',
-    projeto: 'Gerenciador de Tarefas',
-    criadaEm: '10/10/2026'
-  }
+  let tarefa: Tarefa | null = $state(null)
+  let carregando = $state(true)
+  let erro = $state('')
+
+  onMount(async () => {
+    try {
+      const id = page.params.id
+
+      if (!id) {
+        erro = 'ID da tarefa não informado.'
+        return
+      }
+
+      tarefa = await buscarTarefa(id)
+    } catch (error) {
+      console.error('Erro ao buscar tarefa:', error)
+      erro = 'Não foi possível carregar a tarefa.'
+    } finally {
+      carregando = false
+    }
+  })
 </script>
 
 <svelte:head>
-  <title>Detalhe da tarefa #{params.id}</title>
+  <title>
+    {tarefa ? `${tarefa.titulo} - Zenith` : 'Detalhe da tarefa - Zenith'}
+  </title>
 </svelte:head>
 
 <main>
-  <a href="/">← Voltar</a>
-
+  <a href="/projetos">← Voltar aos projetos</a>
   <h1>Detalhe da tarefa</h1>
-  <p>ID da tarefa: {params.id}</p>
 
-  <section>
+  {#if carregando}
+    <p>Carregando tarefa...</p>
+  {:else if erro}
+    <p role="alert">{erro}</p>
+  {:else if tarefa}
     <h2>{tarefa.titulo}</h2>
     <p>{tarefa.descricao}</p>
 
     <dl>
+      <dt>ID</dt>
+      <dd>{tarefa.id}</dd>
+
+      <dt>Projeto ID</dt>
+      <dd>{tarefa.projetoId}</dd>
+
       <dt>Status</dt>
       <dd>{tarefa.status}</dd>
 
@@ -40,12 +64,6 @@
 
       <dt>Prazo</dt>
       <dd>{tarefa.prazo}</dd>
-
-      <dt>Projeto</dt>
-      <dd>{tarefa.projeto}</dd>
-
-      <dt>Data de criação</dt>
-      <dd>{tarefa.criadaEm}</dd>
     </dl>
-  </section>
+  {/if}
 </main>
