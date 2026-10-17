@@ -1,7 +1,7 @@
 <script lang="ts">
 	// Issue #42 - 14 - Criar a página do projeto
 	// Versão baseada na implementação do branch Niko_dev, com o cartão da issue #29 (TarefaCard).
-	import TarefaCard from '$lib/components/TarefaCard.svelte';
+	import TarefaCard from '#lib/components/TarefaCard.svelte';
 
 	let { data } = $props();
 	let projeto = $derived(data.projeto);
