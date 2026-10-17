@@ -17,6 +17,10 @@
 
 <h1>Lista de projetos</h1>
 
+<p>
+  <a href="/tarefas/nova">Criar nova tarefa</a>
+</p>
+
 {#if erro}
   <p>{erro}</p>
 {:else if projetos.length === 0}
