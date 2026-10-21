@@ -13,6 +13,7 @@
 
 <section class="projeto">
 	<a href="/projetos" class="voltar">← Projetos</a>
+	<a href={`/projetos/${projeto.id}/editar`} class="editar">Editar projeto</a>
 
 	<header>
 		<h1>{projeto.nome}</h1>
