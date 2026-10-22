@@ -1,20 +1,13 @@
 import { error } from '@sveltejs/kit'
 import type { PageLoad } from './$types'
-import {
-  buscarTarefa,
-  listarProjetos
-} from '../../../../api'
+import { buscarTarefa } from '../../../../api'
 
 export const load: PageLoad = async ({ params }) => {
   try {
-    const [tarefa, projetos] = await Promise.all([
-      buscarTarefa(params.id),
-      listarProjetos()
-    ])
+    const tarefa = await buscarTarefa(params.id)
 
     return {
-      tarefa,
-      projetos
+      tarefa
     }
   } catch {
     error(404, 'Tarefa não encontrada')
