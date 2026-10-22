@@ -14,11 +14,16 @@
   } from '../../tipos'
 
   type Props = {
-    tarefa?: Tarefa
-    onSaved?: (tarefa: Tarefa) => void
+  tarefa?: Tarefa
+  projetoIdInicial?: string
+  onSaved?: (tarefa: Tarefa) => void
   }
 
-  let { tarefa, onSaved }: Props = $props()
+  let {
+    tarefa,
+    projetoIdInicial = '',
+    onSaved
+  }: Props = $props()
 
   let projetos: Projeto[] = $state([])
   let carregandoProjetos = $state(true)
@@ -31,10 +36,11 @@
   let erros: Partial<Record<keyof NovaTarefa, string>> = $state({})
 
   function formularioInicial(
-    tarefa?: Tarefa
+    tarefa?: Tarefa,
+    projetoIdInicial = ''
   ): NovaTarefa {
     return {
-      projetoId: tarefa?.projetoId ?? '',
+      projetoId: tarefa?.projetoId ?? projetoIdInicial,
       titulo: tarefa?.titulo ?? '',
       descricao: tarefa?.descricao ?? '',
       status: tarefa?.status ?? 'a-fazer',
@@ -46,11 +52,11 @@
 
   // svelte-ignore state_referenced_locally
   let formulario: NovaTarefa = $state(
-    formularioInicial(tarefa)
+    formularioInicial(tarefa, projetoIdInicial)
   )
 
   $effect(() => {
-    formulario = formularioInicial(tarefa)
+    formulario = formularioInicial(tarefa, projetoIdInicial)
   })
 
   onMount(async () => {
@@ -76,8 +82,14 @@
       erros.descricao = 'Informe a descrição da tarefa.'
     }
 
+    const projetoExiste = projetos.some(
+      (projeto) => projeto.id === formulario.projetoId
+    )
+
     if (!formulario.projetoId) {
       erros.projetoId = 'Selecione um projeto.'
+    } else if (!projetoExiste) {
+      erros.projetoId = 'O projeto selecionado não existe.'
     }
 
     if (!formulario.responsavel.trim()) {

@@ -65,6 +65,16 @@
       "prioridade": "baixa",
       "responsavel": "Ana",
       "prazo": "2026-10-20"
+    },
+    {
+      "projetoId": "1",
+      "titulo": "Teste de nova tarefa ",
+      "descricao": "d",
+      "status": "a-fazer",
+      "prioridade": "media",
+      "responsavel": "Testador",
+      "prazo": "2026-10-22",
+      "id": "9LfiN3QUyEg"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
