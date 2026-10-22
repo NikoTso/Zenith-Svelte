@@ -1,83 +1,88 @@
-import type { NovaTarefa, Projeto, Tarefa } from './tipos'
+import type {
+  Tarefa,
+  Projeto,
+  NovaTarefa,
+  NovoProjeto,
+  AtualizarTarefa,
+  AtualizarProjeto,
+} from "./tipos";
 
-const API = 'http://localhost:3000'
+const API = "http://localhost:3000";
 
-export type ProjetoComTarefas = Projeto & {
-  tarefas: Tarefa[]
-}
+export type ProjetoComTarefas = Projeto & {tarefas: Tarefa[];};
 
-async function get<Tipo>(caminho: string): Promise<Tipo> {
-  const resposta = await fetch(`${API}${caminho}`)
+// Função genérica para consultas
+async function get<T>(url: string): Promise<T> {
+  const resposta = await fetch(`${API}/${url}`);
 
   if (!resposta.ok) {
-    throw new Error(
-      `Erro ao acessar ${caminho}: HTTP ${resposta.status}`
-    )
+    throw new Error(`HTTP ${resposta.status}`);
   }
 
-  return (await resposta.json()) as Tipo
+  return (await resposta.json()) as T;
 }
 
+// Função genérica para criação e atualização
+async function escrever<T, D extends object>(
+  url: string,
+  metodo: "POST" | "PATCH",
+  dados: D,
+): Promise<T> {
+  const resposta = await fetch(`${API}/${url}`, {
+    method: metodo,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(dados),
+  });
+
+  if (!resposta.ok) {
+    throw new Error(`HTTP ${resposta.status}`);
+  }
+
+  return (await resposta.json()) as T;
+}
+
+// Listar e buscar tarefas
 export function listarTarefas(): Promise<Tarefa[]> {
-  return get<Tarefa[]>('/tarefas')
+  return get<Tarefa[]>("tarefas");
 }
 
 export function buscarTarefa(id: string): Promise<Tarefa> {
-  return get<Tarefa>(`/tarefas/${encodeURIComponent(id)}`)
+  return get<Tarefa>(`tarefas/${id}`);
 }
 
+// Listar e buscar projetos
 export function listarProjetos(): Promise<Projeto[]> {
-  return get<Projeto[]>('/projetos')
+  return get<Projeto[]>("projetos");
 }
 
-export function buscarProjeto(
-  id: string
-): Promise<ProjetoComTarefas> {
-  return get<ProjetoComTarefas>(
-    `/projetos/${encodeURIComponent(id)}?_embed=tarefas`
-  )
+export function buscarProjeto(id: string): Promise<ProjetoComTarefas> {
+  return get<ProjetoComTarefas>(`projetos/${id}?_embed=tarefas`);
 }
 
-export async function criarTarefa(
-  dados: NovaTarefa
-): Promise<Tarefa> {
-  const resposta = await fetch(`${API}/tarefas`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(dados)
-  })
-
-  if (!resposta.ok) {
-    throw new Error(
-      `Erro ao criar tarefa: HTTP ${resposta.status}`
-    )
-  }
-
-  return (await resposta.json()) as Tarefa
+// Criar tarefa
+export function criarTarefa(dados: NovaTarefa): Promise<Tarefa> {
+  return escrever<Tarefa, NovaTarefa>("tarefas", "POST", dados);
 }
 
-export async function atualizarTarefa(
+// Atualizar tarefa
+export function atualizarTarefa(
   id: string,
-  dados: Partial<NovaTarefa>
+  dados: AtualizarTarefa,
 ): Promise<Tarefa> {
-  const resposta = await fetch(
-    `${API}/tarefas/${encodeURIComponent(id)}`,
-    {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(dados)
-    }
-  )
+  return escrever<Tarefa, AtualizarTarefa>(`tarefas/${id}`, "PATCH", dados);
+}
 
-  if (!resposta.ok) {
-    throw new Error(
-      `Erro ao atualizar tarefa: HTTP ${resposta.status}`
-    )
-  }
+// Criar projeto
+export function criarProjeto(dados: NovoProjeto): Promise<Projeto> {
+  return escrever<Projeto, NovoProjeto>("projetos", "POST", dados);
+}
 
-  return (await resposta.json()) as Tarefa
+// Atualizar projeto
+export function atualizarProjeto(
+  id: string,
+  dados: AtualizarProjeto,
+): Promise<Projeto> {
+  return escrever<Projeto, AtualizarProjeto>(`projetos/${id}`, "PATCH", dados);
 }
