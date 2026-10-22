@@ -38,6 +38,13 @@
 		+ Nova tarefa
 	</a>
 
+	<a
+		href={`/projetos/${projeto.id}/editar`}
+		class="editar-projeto"
+	>
+		Editar projeto
+	</a>
+
 	<h2>Tarefas do projeto</h2>
 
 	{#if projeto.tarefas.length === 0}
@@ -72,18 +79,26 @@
 		margin-bottom: 1rem;
 	}
 
-	.nova-tarefa {
-		display: inline-block;
-		margin: 0.5rem 0 1.5rem;
-		padding: 0.7rem 1rem;
-		text-decoration: none;
-		border: 1px solid #ccc;
-		border-radius: 6px;
-		color: inherit;
+	.nova-tarefa,
+	.editar-projeto {
+	display: inline-block;
+	margin: 0.5rem 0 1.5rem;
+	padding: 0.7rem 1rem;
+	text-decoration: none;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	color: inherit;
 	}
 
-	.nova-tarefa:hover {
-		background: #f5f5f5;
+	.nova-tarefa:hover,
+	.editar-projeto:hover {
+	background: #f5f5f5;
+	}
+
+	.nova-tarefa:focus-visible,
+	.editar-projeto:focus-visible {
+	outline: 3px solid #2457c5;
+	outline-offset: 3px;
 	}
 
 	.grid {
