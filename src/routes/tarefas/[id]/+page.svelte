@@ -45,6 +45,9 @@
   {:else if tarefa}
     <h2>{tarefa.titulo}</h2>
     <p>{tarefa.descricao}</p>
+    <a class="botao-editar" href={`/tarefas/${tarefa.id}/editar`}>
+      Editar tarefa
+    </a>
 
     <dl>
       <dt>ID</dt>
@@ -67,3 +70,25 @@
     </dl>
   {/if}
 </main>
+
+<style>
+  .botao-editar {
+    display: inline-block;
+    margin: 1rem 0;
+    padding: 0.7rem 1rem;
+    border-radius: 6px;
+    background-color: #2457c5;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .botao-editar:hover {
+    background-color: #1b449c;
+  }
+
+  .botao-editar:focus-visible {
+    outline: 3px solid #2457c5;
+    outline-offset: 3px;
+  }
+</style>

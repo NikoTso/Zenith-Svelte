@@ -1,5 +1,6 @@
+
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onMount, tick } from 'svelte'
   import {
     listarProjetos,
     criarTarefa,
@@ -13,11 +14,16 @@
   } from '../../tipos'
 
   type Props = {
-    tarefa?: Tarefa
-    onSaved?: (tarefa: Tarefa) => void
+  tarefa?: Tarefa
+  projetoIdInicial?: string
+  onSaved?: (tarefa: Tarefa) => void
   }
 
-  let { tarefa, onSaved }: Props = $props()
+  let {
+    tarefa,
+    projetoIdInicial = '',
+    onSaved
+  }: Props = $props()
 
   let projetos: Projeto[] = $state([])
   let carregandoProjetos = $state(true)
@@ -26,11 +32,15 @@
   let erro = $state('')
   let sucesso = $state('')
 
+  // NOVO: erros individuais de cada campo
+  let erros: Partial<Record<keyof NovaTarefa, string>> = $state({})
+
   function formularioInicial(
-    tarefa?: Tarefa
+    tarefa?: Tarefa,
+    projetoIdInicial = ''
   ): NovaTarefa {
     return {
-      projetoId: tarefa?.projetoId ?? '',
+      projetoId: tarefa?.projetoId ?? projetoIdInicial,
       titulo: tarefa?.titulo ?? '',
       descricao: tarefa?.descricao ?? '',
       status: tarefa?.status ?? 'a-fazer',
@@ -42,15 +52,13 @@
 
   // svelte-ignore state_referenced_locally
   let formulario: NovaTarefa = $state(
-    formularioInicial(tarefa)
+    formularioInicial(tarefa, projetoIdInicial)
   )
 
-  // Atualiza os campos caso a tarefa recebida mude.
   $effect(() => {
-    formulario = formularioInicial(tarefa)
+    formulario = formularioInicial(tarefa, projetoIdInicial)
   })
 
-  // Carrega as opções do seletor pela API.
   onMount(async () => {
     try {
       projetos = await listarProjetos()
@@ -62,11 +70,68 @@
     }
   })
 
+  // NOVO: validação dos campos obrigatórios
+  function validarFormulario(): boolean {
+    erros = {}
+
+    if (!formulario.titulo.trim()) {
+      erros.titulo = 'Informe o título da tarefa.'
+    }
+
+    if (!formulario.descricao.trim()) {
+      erros.descricao = 'Informe a descrição da tarefa.'
+    }
+
+    const projetoExiste = projetos.some(
+      (projeto) => projeto.id === formulario.projetoId
+    )
+
+    if (!formulario.projetoId) {
+      erros.projetoId = 'Selecione um projeto.'
+    } else if (!projetoExiste) {
+      erros.projetoId = 'O projeto selecionado não existe.'
+    }
+
+    if (!formulario.responsavel.trim()) {
+      erros.responsavel = 'Informe o responsável.'
+    }
+
+    if (!formulario.prazo) {
+      erros.prazo = 'Informe o prazo.'
+    }
+
+    if (!formulario.status) {
+      erros.status = 'Selecione o status da tarefa.'
+    }
+
+    if (!formulario.prioridade) {
+      erros.prioridade = 'Selecione a prioridade da tarefa.'
+    }
+
+    return Object.keys(erros).length === 0
+  }
+
   async function salvar(event: SubmitEvent) {
     event.preventDefault()
 
+    const formularioHTML = event.currentTarget as HTMLFormElement
+
     erro = ''
     sucesso = ''
+
+    // Valida os campos obrigatórios
+    if (!validarFormulario()) {
+      // Aguarda as mensagens de erro aparecerem na tela
+      await tick()
+
+      // Direciona o foco para o primeiro campo inválido
+      formularioHTML
+        .querySelector<HTMLElement>('[aria-invalid="true"]')
+        ?.focus()
+
+      return
+    }
+
     enviando = true
 
     try {
@@ -81,12 +146,12 @@
       onSaved?.(resultado)
     } catch (error) {
       console.error('Erro ao salvar tarefa:', error)
-
       erro = 'Não foi possível salvar a tarefa.'
     } finally {
       enviando = false
     }
   }
+
 </script>
 
 <svelte:head>
@@ -100,30 +165,47 @@
     <p class="erro" role="alert">{erroProjetos}</p>
   {/if}
 
-  <form onsubmit={salvar}>
-    <label for="titulo">Título</label>
+  <!-- novalidate permite apresentar nossas próprias mensagens -->
+  <form onsubmit={salvar} novalidate>
+    <label for="titulo">Título *</label>
     <input
       id="titulo"
       name="titulo"
       bind:value={formulario.titulo}
       required
+      aria-invalid={Boolean(erros.titulo)}
+      aria-describedby={erros.titulo ? 'erro-titulo' : undefined}
     />
+    {#if erros.titulo}
+      <p id="erro-titulo" class="erro" role="alert">
+        {erros.titulo}
+      </p>
+    {/if}
 
-    <label for="descricao">Descrição</label>
+    <label for="descricao">Descrição *</label>
     <textarea
       id="descricao"
       name="descricao"
       bind:value={formulario.descricao}
       required
+      aria-invalid={Boolean(erros.descricao)}
+      aria-describedby={erros.descricao ? 'erro-descricao' : undefined}
     ></textarea>
+    {#if erros.descricao}
+      <p id="erro-descricao" class="erro" role="alert">
+        {erros.descricao}
+      </p>
+    {/if}
 
-    <label for="projetoId">Projeto</label>
+    <label for="projetoId">Projeto *</label>
     <select
       id="projetoId"
       name="projetoId"
       bind:value={formulario.projetoId}
       disabled={carregandoProjetos || projetos.length === 0}
       required
+      aria-invalid={Boolean(erros.projetoId)}
+      aria-describedby={erros.projetoId ? 'erro-projeto' : undefined}
     >
       <option value="" disabled>
         {carregandoProjetos
@@ -137,13 +219,20 @@
         </option>
       {/each}
     </select>
+    {#if erros.projetoId}
+      <p id="erro-projeto" class="erro" role="alert">
+        {erros.projetoId}
+      </p>
+    {/if}
 
-    <label for="status">Status</label>
+    <label for="status">Status *</label>
     <select
       id="status"
       name="status"
       bind:value={formulario.status}
       required
+      aria-invalid={Boolean(erros.status)}
+      aria-describedby={erros.status ? 'erro-status' : undefined}
     >
       <option value="a-fazer">A fazer</option>
       <option value="em-andamento">Em andamento</option>
@@ -151,34 +240,64 @@
       <option value="concluida">Concluída</option>
     </select>
 
-    <label for="prioridade">Prioridade</label>
+    {#if erros.status}
+      <p id="erro-status" class="erro" role="alert">
+        {erros.status}
+      </p>
+    {/if}
+
+    <label for="prioridade">Prioridade *</label>
     <select
       id="prioridade"
       name="prioridade"
       bind:value={formulario.prioridade}
       required
+      aria-invalid={Boolean(erros.prioridade)}
+      aria-describedby={
+        erros.prioridade ? 'erro-prioridade' : undefined
+      }
     >
       <option value="baixa">Baixa</option>
       <option value="media">Média</option>
       <option value="alta">Alta</option>
     </select>
 
-    <label for="responsavel">Responsável</label>
+    {#if erros.prioridade}
+      <p id="erro-prioridade" class="erro" role="alert">
+        {erros.prioridade}
+      </p>
+    {/if}
+
+    <label for="responsavel">Responsável *</label>
     <input
       id="responsavel"
       name="responsavel"
       bind:value={formulario.responsavel}
       required
+      aria-invalid={Boolean(erros.responsavel)}
+      aria-describedby={erros.responsavel ? 'erro-responsavel' : undefined}
     />
+    {#if erros.responsavel}
+      <p id="erro-responsavel" class="erro" role="alert">
+        {erros.responsavel}
+      </p>
+    {/if}
 
-    <label for="prazo">Prazo</label>
+    <label for="prazo">Prazo *</label>
     <input
       id="prazo"
       name="prazo"
       type="date"
       bind:value={formulario.prazo}
       required
+      aria-invalid={Boolean(erros.prazo)}
+      aria-describedby={erros.prazo ? 'erro-prazo' : undefined}
     />
+    {#if erros.prazo}
+      <p id="erro-prazo" class="erro" role="alert">
+        {erros.prazo}
+      </p>
+    {/if}
 
     {#if erro}
       <p class="erro" role="alert">{erro}</p>
@@ -235,6 +354,13 @@
     border-radius: 6px;
   }
 
+  /* NOVO: campo inválido identificável visualmente */
+  input[aria-invalid="true"],
+  textarea[aria-invalid="true"],
+  select[aria-invalid="true"] {
+    border: 2px solid #b42318;
+  }
+
   textarea {
     min-height: 100px;
     resize: vertical;
@@ -251,10 +377,21 @@
   }
 
   .erro {
-    color: #dc4545;
+    color: #b42318;
+    font-weight: 600;
+    margin: 0;
   }
 
   .sucesso {
     color: #218838;
+  }
+
+  /* NOVO: indicação de foco para navegação por teclado */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  button:focus-visible {
+    outline: 3px solid #2457c5;
+    outline-offset: 2px;
   }
 </style>
