@@ -17,6 +17,7 @@
 
 		<div class="menu">
 			<a href="/">Tarefas</a>
+			<a href="/quadro">Quadro</a>
 			<a href="/projetos">Projetos</a>
 		</div>
 	</nav>

@@ -1,42 +1,18 @@
+
 <script lang="ts">
   import { onMount } from 'svelte'
   import TarefaCard from '#lib/components/TarefaCard.svelte'
   import Filtros from '#lib/components/Filtros.svelte'
   import { listarTarefas } from '../api'
-  import type { Prioridade, Status, Tarefa } from '../tipos'
+  import { filtros, filtrarTarefas } from '#lib/estadoFiltros.svelte.ts'
+  import type { Tarefa } from '../tipos'
 
   let tarefas: Tarefa[] = $state([])
   let carregando = $state(true)
   let erro = $state('')
 
-  // Issues #24 e #25: estado dos controles de busca e filtros.
-  // TODO — Issue #26: centralizar estes estados em um módulo/store compartilhado
-  // para que a lista e a futura rota /quadro usem exatamente os mesmos valores.
-  let busca = $state('')
-  let statusSelecionado = $state<Status | ''>('')
-  let prioridadeSelecionada = $state<Prioridade | ''>('')
-
-  // Issue #24: busca pelo título, sem diferenciar maiúsculas de minúsculas.
-  // Issue #25: os filtros de status e prioridade são combinados com a busca.
-  let tarefasFiltradas = $derived(
-    tarefas.filter((tarefa) => {
-      const termo = busca.trim().toLocaleLowerCase()
-      const titulo = tarefa.titulo.toLocaleLowerCase()
-
-      const correspondeTitulo = titulo.includes(termo)
-      const correspondeStatus =
-        statusSelecionado === '' || tarefa.status === statusSelecionado
-      const correspondePrioridade =
-        prioridadeSelecionada === '' ||
-        tarefa.prioridade === prioridadeSelecionada
-
-      return (
-        correspondeTitulo &&
-        correspondeStatus &&
-        correspondePrioridade
-      )
-    })
-  )
+  // Issue #26: utiliza o estado compartilhado da busca e dos filtros.
+  let tarefasFiltradas = $derived(filtrarTarefas(tarefas))
 
   onMount(async () => {
     try {
@@ -57,14 +33,14 @@
 <main>
   <h1>Tarefas</h1>
 
-  <!-- Issues #24 e #25: componente de busca e filtros já existente. -->
+  <!-- Issues #24, #25 e #26: busca e filtros com estado compartilhado. -->
   <Filtros
-    {busca}
-    status={statusSelecionado}
-    prioridade={prioridadeSelecionada}
-    onBuscaChange={(valor) => (busca = valor)}
-    onStatusChange={(valor) => (statusSelecionado = valor)}
-    onPrioridadeChange={(valor) => (prioridadeSelecionada = valor)}
+    busca={filtros.busca}
+    status={filtros.statusSelecionado}
+    prioridade={filtros.prioridadeSelecionada}
+    onBuscaChange={(valor) => (filtros.busca = valor)}
+    onStatusChange={(valor) => (filtros.statusSelecionado = valor)}
+    onPrioridadeChange={(valor) => (filtros.prioridadeSelecionada = valor)}
   />
 
   {#if carregando}
@@ -85,8 +61,6 @@
     </section>
   {/if}
 
-  <!-- TODO — Issue #28: adicionar navegação entre a lista e o quadro,
-       preservando busca e filtros; usar o estado compartilhado da Issue #26. -->
 </main>
 
 <style>
