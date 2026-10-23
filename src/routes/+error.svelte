@@ -9,9 +9,9 @@
 <h1>{page.status}</h1>
 
 {#if page.status === 404}
-    <p>Página não encontrada</p>
+    <p>{page.error?.message ?? 'Página não encontrada'}</p>
 {:else}
-    <p>Ocorreu um erro inesperado</p>
+    <p>{page.error?.message ?? 'Ocorreu um erro inesperado'}</p>
 {/if}
 
 <a href="/">← Voltar para a página inicial</a>

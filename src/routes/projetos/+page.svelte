@@ -16,10 +16,7 @@
 </script>
 
 <h1>Lista de projetos</h1>
-
-<p>
-  <a href="/tarefas/nova">Criar nova tarefa</a>
-</p>
+<a href="/projetos/novo">+ Novo projeto</a>
 
 {#if erro}
   <p>{erro}</p>

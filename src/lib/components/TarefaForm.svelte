@@ -1,6 +1,6 @@
 
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onMount, tick } from 'svelte'
   import {
     listarProjetos,
     criarTarefa,
@@ -14,11 +14,16 @@
   } from '../../tipos'
 
   type Props = {
-    tarefa?: Tarefa
-    onSaved?: (tarefa: Tarefa) => void
+  tarefa?: Tarefa
+  projetoIdInicial?: string
+  onSaved?: (tarefa: Tarefa) => void
   }
 
-  let { tarefa, onSaved }: Props = $props()
+  let {
+    tarefa,
+    projetoIdInicial = '',
+    onSaved
+  }: Props = $props()
 
   let projetos: Projeto[] = $state([])
   let carregandoProjetos = $state(true)
@@ -31,10 +36,11 @@
   let erros: Partial<Record<keyof NovaTarefa, string>> = $state({})
 
   function formularioInicial(
-    tarefa?: Tarefa
+    tarefa?: Tarefa,
+    projetoIdInicial = ''
   ): NovaTarefa {
     return {
-      projetoId: tarefa?.projetoId ?? '',
+      projetoId: tarefa?.projetoId ?? projetoIdInicial,
       titulo: tarefa?.titulo ?? '',
       descricao: tarefa?.descricao ?? '',
       status: tarefa?.status ?? 'a-fazer',
@@ -46,11 +52,11 @@
 
   // svelte-ignore state_referenced_locally
   let formulario: NovaTarefa = $state(
-    formularioInicial(tarefa)
+    formularioInicial(tarefa, projetoIdInicial)
   )
 
   $effect(() => {
-    formulario = formularioInicial(tarefa)
+    formulario = formularioInicial(tarefa, projetoIdInicial)
   })
 
   onMount(async () => {
@@ -76,8 +82,14 @@
       erros.descricao = 'Informe a descrição da tarefa.'
     }
 
+    const projetoExiste = projetos.some(
+      (projeto) => projeto.id === formulario.projetoId
+    )
+
     if (!formulario.projetoId) {
       erros.projetoId = 'Selecione um projeto.'
+    } else if (!projetoExiste) {
+      erros.projetoId = 'O projeto selecionado não existe.'
     }
 
     if (!formulario.responsavel.trim()) {
@@ -88,17 +100,35 @@
       erros.prazo = 'Informe o prazo.'
     }
 
+    if (!formulario.status) {
+      erros.status = 'Selecione o status da tarefa.'
+    }
+
+    if (!formulario.prioridade) {
+      erros.prioridade = 'Selecione a prioridade da tarefa.'
+    }
+
     return Object.keys(erros).length === 0
   }
 
   async function salvar(event: SubmitEvent) {
     event.preventDefault()
 
+    const formularioHTML = event.currentTarget as HTMLFormElement
+
     erro = ''
     sucesso = ''
 
-    // NOVO: não envia se houver campos inválidos
+    // Valida os campos obrigatórios
     if (!validarFormulario()) {
+      // Aguarda as mensagens de erro aparecerem na tela
+      await tick()
+
+      // Direciona o foco para o primeiro campo inválido
+      formularioHTML
+        .querySelector<HTMLElement>('[aria-invalid="true"]')
+        ?.focus()
+
       return
     }
 
@@ -121,6 +151,7 @@
       enviando = false
     }
   }
+
 </script>
 
 <svelte:head>
@@ -200,6 +231,8 @@
       name="status"
       bind:value={formulario.status}
       required
+      aria-invalid={Boolean(erros.status)}
+      aria-describedby={erros.status ? 'erro-status' : undefined}
     >
       <option value="a-fazer">A fazer</option>
       <option value="em-andamento">Em andamento</option>
@@ -207,17 +240,33 @@
       <option value="concluida">Concluída</option>
     </select>
 
+    {#if erros.status}
+      <p id="erro-status" class="erro" role="alert">
+        {erros.status}
+      </p>
+    {/if}
+
     <label for="prioridade">Prioridade *</label>
     <select
       id="prioridade"
       name="prioridade"
       bind:value={formulario.prioridade}
       required
+      aria-invalid={Boolean(erros.prioridade)}
+      aria-describedby={
+        erros.prioridade ? 'erro-prioridade' : undefined
+      }
     >
       <option value="baixa">Baixa</option>
       <option value="media">Média</option>
       <option value="alta">Alta</option>
     </select>
+
+    {#if erros.prioridade}
+      <p id="erro-prioridade" class="erro" role="alert">
+        {erros.prioridade}
+      </p>
+    {/if}
 
     <label for="responsavel">Responsável *</label>
     <input
