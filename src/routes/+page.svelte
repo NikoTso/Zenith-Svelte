@@ -6,6 +6,7 @@
   import { listarTarefas } from '../api'
   import { filtros, filtrarTarefas } from '#lib/estadoFiltros.svelte.ts'
   import type { Tarefa } from '../tipos'
+  import AlternadorVisao from '#lib/components/AlternadorVisao.svelte'
 
   let tarefas: Tarefa[] = $state([])
   let carregando = $state(true)
@@ -32,6 +33,8 @@
 
 <main>
   <h1>Tarefas</h1>
+
+  <AlternadorVisao ativa="lista" />
 
   <!-- Issues #24, #25 e #26: busca e filtros com estado compartilhado. -->
   <Filtros

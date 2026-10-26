@@ -4,8 +4,9 @@
   import TarefaCard from '#lib/components/TarefaCard.svelte'
   import Filtros from '#lib/components/Filtros.svelte'
   import { listarTarefas } from '../../api'
-  import { filtros, filtrarTarefas } from '../../lib/estadoFiltros.svelte'
+  import { filtros, filtrarTarefas } from '../../lib/estadoFiltros.svelte.ts'
   import type { Status, Tarefa } from '../../tipos'
+  import AlternadorVisao from '#lib/components/AlternadorVisao.svelte'
 
   let tarefas: Tarefa[] = $state([])
   let carregando = $state(true)
@@ -38,6 +39,8 @@
 
 <main>
   <h1>Quadro de tarefas</h1>
+
+  <AlternadorVisao ativa="quadro" />
 
   <Filtros
     busca={filtros.busca}
