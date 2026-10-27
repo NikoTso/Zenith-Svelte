@@ -7,10 +7,12 @@
   import { filtros, filtrarTarefas } from '../../lib/estadoFiltros.svelte.ts'
   import type { Status, Tarefa } from '../../tipos'
   import AlternadorVisao from '#lib/components/AlternadorVisao.svelte'
+  import { rotuloStatus } from '#lib/status.ts'
 
   let tarefas: Tarefa[] = $state([])
   let carregando = $state(true)
   let erro = $state('')
+  let aviso = $state('')
 
   const colunas: { status: Status; titulo: string }[] = [
     { status: 'a-fazer', titulo: 'A fazer' },
@@ -20,6 +22,13 @@
   ]
 
   let tarefasFiltradas = $derived(filtrarTarefas(tarefas))
+
+  function substituirTarefa(atualizada: Tarefa) {
+    tarefas = tarefas.map((tarefa) =>
+      tarefa.id === atualizada.id ? atualizada : tarefa
+    )
+    aviso = `Tarefa "${atualizada.titulo}" movida para ${rotuloStatus(atualizada.status)}.`
+  }
 
   onMount(async () => {
     try {
@@ -62,9 +71,13 @@
           <h2>{coluna.titulo}</h2>
 
           {#each tarefasFiltradas.filter((tarefa) => tarefa.status === coluna.status) as tarefa (tarefa.id)}
-            <a href={`/tarefas/${tarefa.id}`} class="card-link">
-              <TarefaCard {tarefa} />
-            </a>
+            <div class="card-item">
+              <TarefaCard
+                {tarefa}
+                href={`/tarefas/${tarefa.id}`}
+                onStatusAlterado={substituirTarefa}
+              />
+            </div>
           {:else}
             <p class="vazio">Nenhuma tarefa nesta coluna.</p>
           {/each}
@@ -72,6 +85,8 @@
       {/each}
     </section>
   {/if}
+
+  <p class="sr-only" aria-live="polite">{aviso}</p>
 </main>
 
 <style>
@@ -93,12 +108,21 @@
   box-sizing: border-box;
 }
 
-.card-link {
-  display: block;
+.card-item {
   min-width: 0;
   margin-bottom: 1rem;
-  color: inherit;
-  text-decoration: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .quadro .coluna :global(.tarefa-card dl) {
