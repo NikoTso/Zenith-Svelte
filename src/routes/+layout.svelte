@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../app.css';
 	import favicon from '#lib/assets/favicon.svg'
 	import type { LayoutProps } from './$types'
 
@@ -16,6 +17,7 @@
 
 		<div class="menu">
 			<a href="/">Tarefas</a>
+			<a href="/quadro">Quadro</a>
 			<a href="/projetos">Projetos</a>
 		</div>
 	</nav>
