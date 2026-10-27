@@ -15,6 +15,12 @@
   // Issue #26: utiliza o estado compartilhado da busca e dos filtros.
   let tarefasFiltradas = $derived(filtrarTarefas(tarefas))
 
+  function substituirTarefa(atualizada: Tarefa) {
+    tarefas = tarefas.map((tarefa) =>
+      tarefa.id === atualizada.id ? atualizada : tarefa
+    )
+  }
+
   onMount(async () => {
     try {
       tarefas = await listarTarefas()
@@ -57,9 +63,11 @@
   {:else}
     <section class="grid" aria-label="Lista de tarefas">
       {#each tarefasFiltradas as tarefa (tarefa.id)}
-        <a href={`/tarefas/${tarefa.id}`} class="card-link">
-          <TarefaCard {tarefa} />
-        </a>
+        <TarefaCard
+          {tarefa}
+          href={`/tarefas/${tarefa.id}`}
+          onStatusAlterado={substituirTarefa}
+        />
       {/each}
     </section>
   {/if}
@@ -77,10 +85,5 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 1rem;
-  }
-
-  .card-link {
-    color: inherit;
-    text-decoration: none;
   }
 </style>
