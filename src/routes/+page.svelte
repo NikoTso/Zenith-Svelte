@@ -7,6 +7,7 @@
   import { filtros, filtrarTarefas } from '#lib/estadoFiltros.svelte.ts'
   import type { Tarefa } from '../tipos'
   import AlternadorVisao from '#lib/components/AlternadorVisao.svelte'
+  import Carregando from '#lib/components/Carregando.svelte'
 
   let tarefas: Tarefa[] = $state([])
   let carregando = $state(true)
@@ -53,7 +54,7 @@
   />
 
   {#if carregando}
-    <p>Carregando tarefas...</p>
+    <Carregando mensagem="carregando tarefas..." />
   {:else if erro}
     <p role="alert">{erro}</p>
   {:else if tarefas.length === 0}
