@@ -86,3 +86,16 @@ export function atualizarProjeto(
 ): Promise<Projeto> {
   return escrever<Projeto, AtualizarProjeto>(`projetos/${id}`, "PATCH", dados);
 }
+
+export async function excluirTarefa(id: string): Promise<void> {
+  const resposta = await fetch(
+    `${API}/tarefas/${encodeURIComponent(id)}`,
+    {
+      method: "DELETE",
+    }
+  )
+
+  if (!resposta.ok) {
+    throw new Error(`HTTP ${resposta.status}`);
+  }
+}
