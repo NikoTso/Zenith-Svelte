@@ -1,3 +1,4 @@
+
 import type {
   Tarefa,
   Projeto,
@@ -9,14 +10,22 @@ import type {
 
 const API = "http://localhost:3000";
 
-export type ProjetoComTarefas = Projeto & {tarefas: Tarefa[];};
+export type ProjetoComTarefas = Projeto & { tarefas: Tarefa[] };
+
+// Erro específico para identificar falhas retornadas pela API.
+export class ErroApi extends Error {
+  constructor(public status: number) {
+    super(`HTTP ${status}`);
+    this.name = "ErroApi";
+  }
+}
 
 // Função genérica para consultas
 async function get<T>(url: string): Promise<T> {
   const resposta = await fetch(`${API}/${url}`);
 
   if (!resposta.ok) {
-    throw new Error(`HTTP ${resposta.status}`);
+    throw new ErroApi(resposta.status);
   }
 
   return (await resposta.json()) as T;
@@ -37,7 +46,7 @@ async function escrever<T, D extends object>(
   });
 
   if (!resposta.ok) {
-    throw new Error(`HTTP ${resposta.status}`);
+    throw new ErroApi(resposta.status);
   }
 
   return (await resposta.json()) as T;
@@ -85,4 +94,18 @@ export function atualizarProjeto(
   dados: AtualizarProjeto,
 ): Promise<Projeto> {
   return escrever<Projeto, AtualizarProjeto>(`projetos/${id}`, "PATCH", dados);
+}
+
+// Excluir tarefa
+export async function excluirTarefa(id: string): Promise<void> {
+  const resposta = await fetch(
+    `${API}/tarefas/${encodeURIComponent(id)}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  if (!resposta.ok) {
+    throw new ErroApi(resposta.status);
+  }
 }

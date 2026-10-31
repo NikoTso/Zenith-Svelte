@@ -1,6 +1,7 @@
+
 import { error } from '@sveltejs/kit'
 import type { PageLoad } from './$types'
-import { buscarProjeto } from '../../../api'
+import { buscarProjeto, ErroApi } from '../../../api'
 
 export const load: PageLoad = async ({ params }) => {
   try {
@@ -9,7 +10,11 @@ export const load: PageLoad = async ({ params }) => {
     return {
       projeto
     }
-  } catch {
-    error(404, 'Projeto não encontrado')
+  } catch (erro) {
+    if (erro instanceof ErroApi && erro.status === 404) {
+      error(404, 'Projeto não encontrado')
+    }
+
+    error(500, 'Não foi possível carregar o projeto. Verifique se a API está funcionando.')
   }
 }

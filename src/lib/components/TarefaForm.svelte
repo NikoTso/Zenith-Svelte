@@ -1,6 +1,7 @@
 
 <script lang="ts">
   import { onMount, tick } from 'svelte'
+  import Carregando from './Carregando.svelte'
   import {
     listarProjetos,
     criarTarefa,
@@ -160,6 +161,10 @@
 
 <section class="formulario">
   <h1>{tarefa ? 'Editar tarefa' : 'Nova tarefa'}</h1>
+
+  {#if carregandoProjetos}
+  <Carregando mensagem="Carregando projetos..." />
+  {/if}
 
   {#if erroProjetos}
     <p class="erro" role="alert">{erroProjetos}</p>
