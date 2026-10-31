@@ -22,16 +22,21 @@
     )
   }
 
-  onMount(async () => {
+  async function carregarTarefas() {
+    carregando = true
+    erro = ''
+
     try {
       tarefas = await listarTarefas()
     } catch (error) {
       console.error('Erro ao carregar tarefas:', error)
-      erro = 'Não foi possível carregar as tarefas.'
+      erro = 'Não foi possível carregar as tarefas. Verifique se a API está funcionando e tente novamente.'
     } finally {
       carregando = false
     }
-  })
+  }
+
+  onMount(carregarTarefas)
 </script>
 
 <svelte:head>
@@ -57,6 +62,7 @@
     <Carregando mensagem="carregando tarefas..." />
   {:else if erro}
     <p role="alert">{erro}</p>
+    <button type="button" onclick={carregarTarefas}>Tentar novamente</button>
   {:else if tarefas.length === 0}
     <p>Nenhuma tarefa cadastrada.</p>
   {:else if tarefasFiltradas.length === 0}
