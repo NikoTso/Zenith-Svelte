@@ -87,6 +87,7 @@
   }
 
   .campo {
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
@@ -98,6 +99,9 @@
 
   input,
   select {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     min-height: 2.75rem;
     padding: 0.5rem 0.75rem;
     border: 1px solid #9ca3af;
