@@ -37,16 +37,6 @@
       "prazo": "2027-10-06"
     },
     {
-      "id": "3",
-      "projetoId": "1",
-      "titulo": "Montar o quadro no GitHub Projects",
-      "descricao": "Colunas por status e uma tarefa por marco",
-      "status": "em-revisao",
-      "prioridade": "media",
-      "responsavel": "Carla",
-      "prazo": "2026-10-07"
-    },
-    {
       "id": "4",
       "projetoId": "1",
       "titulo": "Listar as tarefas na tela",

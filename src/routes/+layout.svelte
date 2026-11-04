@@ -2,6 +2,8 @@
 	import '../app.css';
 	import favicon from '#lib/assets/favicon.svg'
 	import type { LayoutProps } from './$types'
+	import { navigating } from '$app/state'
+	import Carregando from '#lib/components/Carregando.svelte';
 
 	let { children }: LayoutProps = $props()
 </script>
@@ -24,6 +26,10 @@
 </header>
 
 <main>
+	{#if navigating.to}
+		<Carregando mensagem="Carregando página..." />
+	{/if}
+	
 	{@render children()}
 </main>
 

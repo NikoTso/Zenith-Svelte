@@ -8,6 +8,8 @@
   import type { Status, Tarefa } from '../../tipos'
   import AlternadorVisao from '#lib/components/AlternadorVisao.svelte'
   import { rotuloStatus } from '#lib/status.ts'
+  import Carregando from '#lib/components/Carregando.svelte'
+
 
   let tarefas: Tarefa[] = $state([])
   let carregando = $state(true)
@@ -61,7 +63,7 @@
   />
 
   {#if carregando}
-    <p>Carregando tarefas...</p>
+    <Carregando mensagem="carregando tarefas..." />
   {:else if erro}
     <p role="alert">{erro}</p>
   {:else}
