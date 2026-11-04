@@ -48,7 +48,7 @@
   <title>Quadro de tarefas - Zenith</title>
 </svelte:head>
 
-<main>
+<div class="pagina">
   <h1>Quadro de tarefas</h1>
 
   <AlternadorVisao ativa="quadro" />
@@ -89,7 +89,7 @@
   {/if}
 
   <p class="sr-only" aria-live="polite">{aviso}</p>
-</main>
+</div>
 
 <style>
    
