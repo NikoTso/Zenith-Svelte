@@ -41,7 +41,7 @@
       "projetoId": "1",
       "titulo": "Listar as tarefas na tela",
       "descricao": "Primeira entrega do Marco 2",
-      "status": "a-fazer",
+      "status": "em-andamento",
       "prioridade": "media",
       "responsavel": "Diego",
       "prazo": "2026-10-14"
@@ -60,7 +60,7 @@
       "projetoId": "1",
       "titulo": "Teste de nova tarefa ",
       "descricao": "d",
-      "status": "a-fazer",
+      "status": "em-andamento",
       "prioridade": "media",
       "responsavel": "Testador",
       "prazo": "2026-10-22",

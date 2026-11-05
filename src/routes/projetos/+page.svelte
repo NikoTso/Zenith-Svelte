@@ -9,16 +9,21 @@
   let carregando = $state(true)
   let erro = $state('')
 
-  onMount(async () => {
+  async function carregarProjetos() {
+    carregando = true
+    erro = ''
+
     try {
       projetos = await listarProjetos()
     } catch (error) {
       console.error('Erro ao carregar projetos:', error)
-      erro = 'Não foi possível carregar os projetos.'
+      erro = 'Não foi possível carregar os projetos. Verifique se a API está funcionando e tente novamente.'
     } finally {
       carregando = false
     }
-  })
+  }
+
+  onMount(carregarProjetos)
 </script>
 
 <svelte:head>
@@ -32,6 +37,7 @@
   <Carregando mensagem="Carregando projetos..." />
 {:else if erro}
   <p role="alert">{erro}</p>
+  <button type="button" onclick={carregarProjetos}>Tentar novamente</button>
 {:else if projetos.length === 0}
   <p>Nenhum projeto encontrado.</p>
 {:else}
