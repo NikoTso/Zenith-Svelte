@@ -14,7 +14,7 @@
   <title>Nova tarefa - Zenith</title>
 </svelte:head>
 
-<div class="pagina">
+<main>
   <a
     class="botao-voltar"
     href={data.projetoIdInicial
@@ -28,10 +28,10 @@
     projetoIdInicial={data.projetoIdInicial}
     onSaved={aoSalvar}
   />
-</div>
+</main>
 
 <style>
-  .pagina {
+  main {
     max-width: 720px;
     margin: 0 auto;
     padding: 1rem;

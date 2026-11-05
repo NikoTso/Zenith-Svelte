@@ -347,15 +347,8 @@ a:hover {
 		background: rgba(255, 255, 255, 0.08);
 	}
 
-	& .menu a[aria-current='page'] {
-		color: #fff;
-		background: rgba(255, 255, 255, 0.08);
-		text-decoration: underline;
-		text-underline-offset: 0.3em;
-	}
-
 	/* ---------- Painéis ---------- */
-	& :is(.filtros, .formulario, :is(main, .pagina) > form, .projeto > header, :is(main, .pagina) > dl, article) {
+	& :is(.filtros, .formulario, main > form, .projeto > header, main > dl, article) {
 		color: var(--ink);
 		background: var(--panel);
 		border: 1px solid var(--line-strong);
@@ -363,19 +356,19 @@ a:hover {
 		box-shadow: none;
 	}
 
-	& :is(.filtros, .formulario, :is(main, .pagina) > form, .projeto > header, :is(main, .pagina) > dl) {
+	& :is(.filtros, .formulario, main > form, .projeto > header, main > dl) {
 		background: var(--panel-raised);
 	}
 
-	& :is(.projeto > header, :is(main, .pagina) > dl, article) {
+	& :is(.projeto > header, main > dl, article) {
 		padding: 1rem 1.2rem;
 	}
 
-	& :is(.projeto > header, :is(main, .pagina) > form, .formulario) {
+	& :is(.projeto > header, main > form, .formulario) {
 		margin-bottom: 1.5rem;
 	}
 
-	& :is(main, .pagina) > form {
+	& main > form {
 		padding: 1.4rem;
 	}
 
@@ -393,17 +386,17 @@ a:hover {
 	}
 
 	/* ---------- Lista de projetos ---------- */
-	& :is(main, .pagina) > article {
+	& main > article {
 		margin-block: 0.8rem;
 		max-width: 52rem;
 	}
 
-	& :is(main, .pagina) > article h2 {
+	& main > article h2 {
 		margin: 0 0 0.3rem;
 		font-size: 1.2rem;
 	}
 
-	& :is(main, .pagina) > article p {
+	& main > article p {
 		color: var(--ink-muted);
 	}
 
@@ -484,7 +477,7 @@ a:hover {
 	}
 
 	/* ---------- Detalhe (lista de definição) ---------- */
-	& :is(main, .pagina) > dl {
+	& main > dl {
 		display: grid;
 		grid-template-columns: max-content 1fr;
 		gap: 0.6rem 2rem;
@@ -681,12 +674,12 @@ a:hover {
 		padding: 0.6rem 1rem;
 	}
 
-	:root:root:root :is(main, .pagina) > dl {
+	:root:root:root main > dl {
 		grid-template-columns: 1fr;
 		gap: 0.2rem;
 	}
 
-	:root:root:root :is(main, .pagina) > dl dd {
+	:root:root:root main > dl dd {
 		margin-bottom: 0.6rem;
 	}
 }

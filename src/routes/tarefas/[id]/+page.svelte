@@ -3,7 +3,7 @@
   import { onMount } from 'svelte'
   import { page } from '$app/state'
   import { goto } from '$app/navigation'
-  import { buscarTarefa, excluirTarefa } from '../../../api'
+  import { buscarTarefa, excluirTarefa, ErroApi } from '../../../api'
   import type { Tarefa } from '../../../tipos'
   import Carregando from '#lib/components/Carregando.svelte'
 
@@ -30,7 +30,7 @@
       await goto('/')
     } catch (error) {
       console.error('Erro ao excluir tarefa:', error)
-      erroExclusao = 'Não foi possível excluir a tarefa.'
+      erroExclusao = 'Não foi possível excluir a tarefa. Verifique se a API está funcionando e tente novamente.'
     } finally {
       excluindo = false
     }
@@ -49,9 +49,16 @@
       }
 
       tarefa = await buscarTarefa(id)
+
     } catch (error) {
       console.error('Erro ao buscar tarefa:', error)
-      erro = 'Não foi possível carregar a tarefa. Verifique se a API está funcionando e tente novamente.'
+
+      if (error instanceof ErroApi && error.status === 404) {
+        erro = 'Tarefa não encontrada.'
+      } else {
+        erro = 'Não foi possível carregar a tarefa. Verifique se a API está funcionando e tente novamente.'
+      }
+
     } finally {
       carregando = false
     }
@@ -72,9 +79,16 @@
 
   {#if carregando}
     <Carregando mensagem="Carregando tarefa..." />
+
   {:else if erro}
     <p role="alert">{erro}</p>
-    <button type="button" onclick={carregarTarefa}>Tentar novamente</button>
+
+    {#if erro !== 'Tarefa não encontrada.'}
+      <button type="button" onclick={carregarTarefa}>
+        Tentar novamente
+      </button>
+    {/if}
+
   {:else if tarefa}
     <h2>{tarefa.titulo}</h2>
     <p>{tarefa.descricao}</p>

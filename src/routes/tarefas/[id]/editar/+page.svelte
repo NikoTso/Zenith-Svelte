@@ -14,7 +14,7 @@
   <title>Editar tarefa - Zenith</title>
 </svelte:head>
 
-<div class="pagina">
+<main>
   <a
     class="botao-voltar"
     href={`/tarefas/${data.tarefa.id}`}
@@ -26,10 +26,10 @@
     tarefa={data.tarefa}
     onSaved={aoSalvar}
   />
-</div>
+</main>
 
 <style>
-  .pagina {
+  main {
     max-width: 720px;
     margin: 0 auto;
     padding: 1rem;
