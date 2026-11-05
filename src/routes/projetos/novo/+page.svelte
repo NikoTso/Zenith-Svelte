@@ -24,7 +24,7 @@
   <title>Novo projeto - Zenith</title>
 </svelte:head>
 
-<main>
+<div class="pagina">
    <a href="/projetos">← Voltar aos projetos</a>
 
    <h1>Novo projeto</h1>
@@ -38,16 +38,16 @@
       aoSalvar={salvar}
       textoBotao="Criar projeto"
    />
-</main>
+</div>
 
 <style>
-   main {
+   .pagina {
       max-width: 720px;
       margin: 0 auto;
       padding: 1.5rem 1rem;
    }
 
-   main > a {
+   .pagina > a {
       display: inline-block;
       margin-bottom: 1rem;
    }
