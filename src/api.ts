@@ -6,14 +6,17 @@ import type {
   AtualizarTarefa,
   AtualizarProjeto,
 } from "./tipos";
+import { supabase } from "./lib/supabase";
 
-const API = "http://localhost:3000";
+const API = import.meta.env.VITE_API_URL;
 
 export type ProjetoComTarefas = Projeto & { tarefas: Tarefa[] };
 
 // Erro específico para identificar falhas retornadas pela API.
 export class ErroApi extends Error {
-  constructor(public status: number) {
+  constructor(public status: number,
+    message: string = `HTTP ${status}`,
+  ) {
     super(`HTTP ${status}`);
     this.name = "ErroApi";
   }
@@ -29,6 +32,12 @@ async function get<T>(url: string): Promise<T> {
   }
 
   return (await resposta.json()) as T;
+}
+
+function verificarErro(error: {message: string;status?: number;} | null): void {
+  if (error) {
+    throw new ErroApi(error.status ?? 500, error.message);
+  }
 }
 
 // Função genérica para criação e atualização
@@ -53,60 +62,117 @@ async function escrever<T, D extends object>(
 }
 
 // Listar e buscar tarefas
-export function listarTarefas(): Promise<Tarefa[]> {
-  return get<Tarefa[]>("tarefas");
+export async  function listarTarefas(): Promise<Tarefa[]> {
+  const { data, error } = await supabase
+  .from("tarefas")
+  .select("*");
+
+  verificarErro(error);
+
+  return (data ?? []) as Tarefa[];
 }
 
-export function buscarTarefa(id: string): Promise<Tarefa> {
-  return get<Tarefa>(`tarefas/${id}`);
+export async function buscarTarefa(id: string): Promise<Tarefa> {
+  const { data, error } = await supabase
+  .from("tarefas")
+  .select("*")
+  .eq("id", id)
+  .single();
+
+  verificarErro(error);
+
+  return data as Tarefa;
 }
 
 // Listar e buscar projetos
-export function listarProjetos(): Promise<Projeto[]> {
-  return get<Projeto[]>("projetos");
+export async function listarProjetos(): Promise<Projeto[]> {
+  const { data, error } = await supabase
+  .from("projetos")
+  .select("*");
+
+  verificarErro(error);
+
+  return (data ?? []) as Projeto[];
 }
 
-export function buscarProjeto(id: string): Promise<ProjetoComTarefas> {
-  return get<ProjetoComTarefas>(`projetos/${id}?_embed=tarefas`);
+export async function buscarProjeto(id: string): Promise<ProjetoComTarefas> {
+  const { data, error } = await supabase
+  .from("projetos")
+  .select("*, tarefas(*)")
+  .eq("id", id)
+  .single();
+
+  verificarErro(error);
+
+  return data as ProjetoComTarefas;
 }
 
 // Criar tarefa
-export function criarTarefa(dados: NovaTarefa): Promise<Tarefa> {
-  return escrever<Tarefa, NovaTarefa>("tarefas", "POST", dados);
+export async function criarTarefa(dados: NovaTarefa): Promise<Tarefa> {
+  const { data, error } = await supabase
+  .from("tarefas")
+  .insert(dados)
+  .select()
+  .single();
+
+  verificarErro(error);
+
+  return data as Tarefa;
 }
 
 // Atualizar tarefa
-export function atualizarTarefa(
+export async function atualizarTarefa(
   id: string,
   dados: AtualizarTarefa,
 ): Promise<Tarefa> {
-  return escrever<Tarefa, AtualizarTarefa>(`tarefas/${id}`, "PATCH", dados);
+  const { data, error } = await supabase
+  .from("tarefas")
+  .update(dados)
+  .eq("id", id)
+  .select()
+  .single();
+
+  verificarErro(error);
+
+  return data as Tarefa;
 }
 
 // Criar projeto
-export function criarProjeto(dados: NovoProjeto): Promise<Projeto> {
-  return escrever<Projeto, NovoProjeto>("projetos", "POST", dados);
+export async function criarProjeto(dados: NovoProjeto): Promise<Projeto> {
+  const { data, error } = await supabase
+  .from("projetos")
+  .insert(dados)
+  .select()
+  .single();
+
+  verificarErro(error);
+
+  return data as Projeto;
 }
 
 // Atualizar projeto
-export function atualizarProjeto(
+export async function atualizarProjeto(
   id: string,
   dados: AtualizarProjeto,
 ): Promise<Projeto> {
-  return escrever<Projeto, AtualizarProjeto>(`projetos/${id}`, "PATCH", dados);
+  const { data, error } = await supabase
+  .from("projetos")
+  .update(dados)
+  .eq("id", id)
+  .select()
+  .single();
+
+  verificarErro(error);
+
+  return data as Projeto;
 }
 
 // Excluir tarefa
-
 export async function excluirTarefa(id: string): Promise<void> {
-  const resposta = await fetch(
-    `${API}/tarefas/${encodeURIComponent(id)}`,
-    {
-      method: "DELETE",
-    }
-  );
+  const { error } = await supabase
+    .from("tarefas")
+    .delete()
+    .eq("id", id);
 
-  if (!resposta.ok) {
-    throw new ErroApi(resposta.status);
-  }
+  verificarErro(error);
 }
