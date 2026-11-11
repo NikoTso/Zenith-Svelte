@@ -27,7 +27,7 @@
 
     try {
       await excluirTarefa(tarefa.id)
-      await goto('/')
+      await goto('/Zenith-Svelte/')
     } catch (error) {
       console.error('Erro ao excluir tarefa:', error)
       erroExclusao = 'Não foi possível excluir a tarefa. Verifique se a API está funcionando e tente novamente.'
@@ -74,7 +74,7 @@
 </svelte:head>
 
 <div class="pagina">
-  <a href="/projetos">← Voltar aos projetos</a>
+  <a href="/Zenith-Svelte/projetos">← Voltar aos projetos</a>
   <h1>Detalhe da tarefa</h1>
 
   {#if carregando}
@@ -96,7 +96,7 @@
     <div class="acoes">
       <a
         class="botao-editar"
-        href={`/tarefas/${tarefa.id}/editar`}
+        href={`/Zenith-Svelte/tarefas/${tarefa.id}/editar`}
       >
         Editar tarefa
       </a>

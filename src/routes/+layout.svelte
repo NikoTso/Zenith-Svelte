@@ -8,7 +8,7 @@
 	let { children }: LayoutProps = $props()
 
 	function atual(caminho: string) {
-		const rota = page.url.pathname
+		const rota = page.url.pathname.replace('/Zenith-Svelte', '') || '/'
 		const ativo = caminho === '/' ? rota === '/' || rota.startsWith('/tarefas') : rota.startsWith(caminho)
 		return ativo ? 'page' : undefined
 	}
@@ -23,12 +23,12 @@
 
 <header>
 	<nav aria-label="Menu principal">
-		<a href="/" class="logo">Zenith</a>
+		<a href="/Zenith-Svelte/" class="logo">Zenith</a>
 
 		<div class="menu">
-			<a href="/" aria-current={atual('/')}>Tarefas</a>
-			<a href="/quadro" aria-current={atual('/quadro')}>Quadro</a>
-			<a href="/projetos" aria-current={atual('/projetos')}>Projetos</a>
+			<a href="/Zenith-Svelte/" aria-current={atual('/')}>Tarefas</a>
+			<a href="/Zenith-Svelte/quadro" aria-current={atual('/quadro')}>Quadro</a>
+			<a href="/Zenith-Svelte/projetos" aria-current={atual('/projetos')}>Projetos</a>
 		</div>
 	</nav>
 </header>

@@ -72,7 +72,7 @@
       {#each tarefasFiltradas as tarefa (tarefa.id)}
         <TarefaCard
           {tarefa}
-          href={`/tarefas/${tarefa.id}`}
+          href={`/Zenith-Svelte/tarefas/${tarefa.id}`}
           onStatusAlterado={substituirTarefa}
         />
       {/each}

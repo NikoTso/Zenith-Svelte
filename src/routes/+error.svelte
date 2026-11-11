@@ -14,4 +14,4 @@
     <p>{page.error?.message ?? 'Ocorreu um erro inesperado'}</p>
 {/if}
 
-<a href="/">← Voltar para a página inicial</a>
+<a href="/Zenith-Svelte/">← Voltar para a página inicial</a>
