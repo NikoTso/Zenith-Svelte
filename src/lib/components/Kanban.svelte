@@ -47,7 +47,9 @@
       <ul>
         {#each tarefasPorStatus(coluna.status) as tarefa}
           <li>
-            <TarefaCard {tarefa} />
+            <TarefaCard {tarefa} 
+            href={`/Zenith-Svelte/tarefas/${tarefa.id}`}
+            />
           </li>
         {:else}
           <li class="vazio">

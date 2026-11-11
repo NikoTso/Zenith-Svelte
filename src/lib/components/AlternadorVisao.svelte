@@ -5,7 +5,7 @@
 
 <nav class="alternador" aria-label="Visualização das tarefas">
     <a
-        href="/"
+        href="/Zenith-Svelte/"
         class:selecionado={ativa === 'lista'}
         aria-current={ativa === 'lista' ? 'page' : undefined}
     >
@@ -13,7 +13,7 @@
     </a>
 
     <a
-        href="/quadro"
+        href="/Zenith-Svelte/quadro"
         class:selecionado={ativa === 'quadro'}
         aria-current={ativa === 'quadro' ? 'page' : undefined}
     >
