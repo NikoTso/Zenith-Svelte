@@ -138,40 +138,82 @@
 </div>
 
 <style>
+  .pagina {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+    color: #f1f5f9;
+  }
+
+  .pagina > a {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: #a9bdfb;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .pagina > a:hover {
+    color: #e8b94a;
+  }
+
+  .pagina h1 {
+    margin: 0 0 1.5rem;
+    font-size: 1.8rem;
+  }
+
+  .pagina h2 {
+    margin: 0 0 0.75rem;
+    color: #f1f5f9;
+    font-size: 1.4rem;
+    overflow-wrap: anywhere;
+  }
+
+  .pagina > p {
+    color: #b8c5e3;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+
   .acoes {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.75rem;
-    margin: 1rem 0;
+    margin: 1.5rem 0;
+  }
+
+  .botao-editar,
+  .botao-excluir {
+    display: inline-block;
+    padding: 0.75rem 1.1rem;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
   }
 
   .botao-editar {
-    display: inline-block;
-    padding: 0.7rem 1rem;
-    border-radius: 6px;
-    background-color: #2457c5;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
+    border-color: #e8b94a;
+    background: #e8b94a;
+    color: #14102a;
   }
 
   .botao-editar:hover {
-    background-color: #1b449c;
+    background: #f5cf6b;
   }
 
   .botao-excluir {
-    padding: 0.7rem 1rem;
-    border: 1px solid #b42318;
-    border-radius: 6px;
-    background-color: #b42318;
+    border-color: #b42318;
+    background: #b42318;
     color: white;
-    font-weight: 600;
-    cursor: pointer;
   }
 
   .botao-excluir:hover:not(:disabled) {
-    background-color: #8e1b13;
+    background: #8e1b13;
   }
 
   .botao-excluir:disabled {
@@ -180,8 +222,77 @@
   }
 
   .botao-editar:focus-visible,
-  .botao-excluir:focus-visible {
-    outline: 3px solid #e8b94a;
+  .botao-excluir:focus-visible,
+  .pagina > a:focus-visible {
+    outline: 3px solid #f5cf6b;
     outline-offset: 3px;
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.7fr) minmax(0, 2fr);
+    gap: 0;
+    margin: 1.5rem 0;
+    padding: 0.5rem 1rem;
+    border: 1px solid #37456e;
+    border-radius: 0.75rem;
+    background: #101936;
+  }
+
+  dt,
+  dd {
+    min-width: 0;
+    margin: 0;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid #293555;
+    overflow-wrap: anywhere;
+    text-align: center;
+  }
+
+  dt {
+    color: #a9bdfb;
+    font-weight: 600;
+  }
+
+  dd {
+    color: #f1f5f9;
+  }
+
+  dt:last-of-type,
+  dd:last-of-type {
+    border-bottom: none;
+  }
+
+  [role="alert"] {
+    padding: 0.85rem 1rem;
+    border: 1px solid #b42318;
+    border-radius: 0.5rem;
+    background: #351b2a;
+    color: #fda4af;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 480px) {
+    .pagina {
+      padding: 1rem 0.75rem;
+    }
+
+    .pagina h1 {
+      font-size: 1.5rem;
+    }
+
+    dl {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 0.5rem 0.85rem;
+    }
+
+    dt {
+      padding-bottom: 0.2rem;
+      border-bottom: none;
+    }
+
+    dd {
+      padding-top: 0.2rem;
+    }
   }
 </style>
