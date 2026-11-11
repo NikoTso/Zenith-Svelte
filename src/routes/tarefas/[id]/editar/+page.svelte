@@ -6,7 +6,7 @@
   let { data }: PageProps = $props()
 
   async function aoSalvar() {
-    await goto(`/tarefas/${data.tarefa.id}`)
+    await goto(`/Zenith-Svelte/tarefas/${data.tarefa.id}`)
   }
 </script>
 
@@ -17,7 +17,7 @@
 <main>
   <a
     class="botao-voltar"
-    href={`/tarefas/${data.tarefa.id}`}
+    href={`/Zenith-Svelte/tarefas/${data.tarefa.id}`}
   >
     ← Cancelar e voltar aos detalhes
   </a>

@@ -16,7 +16,7 @@
          criadoEm: new Date().toISOString().slice(0, 10)
       })
 
-      await goto(`/projetos/${novo.id}`)
+      await goto(`/Zenith-Svelte/projetos/${novo.id}`)
    }
 </script>
 
@@ -25,7 +25,7 @@
 </svelte:head>
 
 <div class="pagina">
-   <a href="/projetos">← Voltar aos projetos</a>
+   <a href="/Zenith-Svelte/projetos">← Voltar aos projetos</a>
 
    <h1>Novo projeto</h1>
 

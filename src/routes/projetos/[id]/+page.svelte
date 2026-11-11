@@ -13,7 +13,7 @@
 </svelte:head>
 
 <section class="projeto">
-	<a href="/projetos" class="voltar">← Projetos</a>
+	<a href="/Zenith-Svelte/projetos" class="voltar">← Projetos</a>
 
 	<header>
 		<h1>{projeto.nome}</h1>
@@ -32,14 +32,14 @@
 	</header>
 
 	<a
-		href={`/tarefas/nova?projetoId=${projeto.id}`}
+		href={`/Zenith-Svelte/tarefas/nova?projetoId=${projeto.id}`}
 		class="nova-tarefa"
 	>
 		+ Nova tarefa
 	</a>
 
 	<a
-		href={`/projetos/${projeto.id}/editar`}
+		href={`/Zenith-Svelte/projetos/${projeto.id}/editar`}
 		class="editar-projeto"
 	>
 		Editar projeto
@@ -53,7 +53,7 @@
 		<div class="grid">
 			{#each projeto.tarefas as tarefa (tarefa.id)}
 				<a
-					href={`/tarefas/${tarefa.id}`}
+					href={`/Zenith-Svelte/tarefas/${tarefa.id}`}
 					class="card-link"
 				>
 					<TarefaCard {tarefa} />

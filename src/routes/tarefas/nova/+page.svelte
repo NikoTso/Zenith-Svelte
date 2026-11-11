@@ -6,7 +6,7 @@
   let { data }: PageProps = $props()
 
   async function aoSalvar() {
-    await goto('/')
+    await goto('/Zenith-Svelte/')
   }
 </script>
 
@@ -18,8 +18,8 @@
   <a
     class="botao-voltar"
     href={data.projetoIdInicial
-      ? `/projetos/${data.projetoIdInicial}`
-      : '/'}
+      ? `/Zenith-Svelte/projetos/${data.projetoIdInicial}`
+      : '/Zenith-Svelte/'}
   >
     ← Voltar
   </a>

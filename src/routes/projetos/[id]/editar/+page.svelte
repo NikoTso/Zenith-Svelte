@@ -21,7 +21,7 @@
          criadoEm: projeto.criadoEm
       })
 
-      await goto(`/projetos/${projeto.id}`)
+      await goto(`/Zenith-Svelte/projetos/${projeto.id}`)
    }
 </script>
 
@@ -30,7 +30,7 @@
 </svelte:head>
 
 <div class="pagina">
-   <a href={`/projetos/${projeto.id}`}>
+   <a href={`/Zenith-Svelte/projetos/${projeto.id}`}>
       ← Cancelar e voltar ao projeto
    </a>
 

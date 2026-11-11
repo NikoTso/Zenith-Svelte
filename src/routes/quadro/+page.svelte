@@ -82,7 +82,7 @@
             <div class="card-item">
               <TarefaCard
                 {tarefa}
-                href={`/tarefas/${tarefa.id}`}
+                href={`/Zenith-Svelte/tarefas/${tarefa.id}`}
                 onStatusAlterado={substituirTarefa}
               />
             </div>

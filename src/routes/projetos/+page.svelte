@@ -31,7 +31,7 @@
 </svelte:head>
 
 <h1>Lista de projetos</h1>
-<a href="/projetos/novo">+ Novo projeto</a>
+<a href="/Zenith-Svelte/projetos/novo">+ Novo projeto</a>
 
 {#if carregando}
   <Carregando mensagem="Carregando projetos..." />
@@ -47,7 +47,7 @@
       <p>{projeto.descricao}</p>
       <p>Disciplina: {projeto.disciplina}</p>
 
-      <a href={`/projetos/${projeto.id}`}>
+      <a href={`/Zenith-Svelte/projetos/${projeto.id}`}>
         Ver projeto
       </a>
     </article>
