@@ -43,7 +43,7 @@
   <title>Tarefas - Zenith</title>
 </svelte:head>
 
-<main>
+<div class="pagina">
   <h1>Tarefas</h1>
 
   <AlternadorVisao ativa="lista" />
@@ -79,10 +79,10 @@
     </section>
   {/if}
 
-</main>
+</div>
 
 <style>
-  main {
+  .pagina {
     max-width: 1100px;
     margin: 0 auto;
     padding: 1.5rem 1rem;
@@ -90,7 +90,7 @@
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
     gap: 1rem;
   }
 </style>

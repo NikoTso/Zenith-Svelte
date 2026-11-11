@@ -29,7 +29,7 @@
    <title>Editar {projeto.nome} - Zenith</title>
 </svelte:head>
 
-<main>
+<div class="pagina">
    <a href={`/projetos/${projeto.id}`}>
       ← Cancelar e voltar ao projeto
    </a>
@@ -45,16 +45,16 @@
       aoSalvar={salvar}
       textoBotao="Salvar alterações"
    />
-</main>
+</div>
 
 <style>
-   main {
+   .pagina {
       max-width: 720px;
       margin: 0 auto;
       padding: 1.5rem 1rem;
    }
 
-   main > a {
+   .pagina > a {
       display: inline-block;
       margin-bottom: 1rem;
    }

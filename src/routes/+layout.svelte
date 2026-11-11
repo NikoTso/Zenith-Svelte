@@ -2,10 +2,16 @@
 	import '../app.css';
 	import favicon from '#lib/assets/favicon.svg'
 	import type { LayoutProps } from './$types'
-	import { navigating } from '$app/state'
+	import { navigating, page } from '$app/state'
 	import Carregando from '#lib/components/Carregando.svelte';
 
 	let { children }: LayoutProps = $props()
+
+	function atual(caminho: string) {
+		const rota = page.url.pathname
+		const ativo = caminho === '/' ? rota === '/' || rota.startsWith('/tarefas') : rota.startsWith(caminho)
+		return ativo ? 'page' : undefined
+	}
 </script>
 
 <svelte:head>
@@ -13,19 +19,21 @@
 	<title>Zenith</title>
 </svelte:head>
 
+<a href="#conteudo" class="pular-conteudo">Pular para o conteúdo</a>
+
 <header>
-	<nav>
+	<nav aria-label="Menu principal">
 		<a href="/" class="logo">Zenith</a>
 
 		<div class="menu">
-			<a href="/">Tarefas</a>
-			<a href="/quadro">Quadro</a>
-			<a href="/projetos">Projetos</a>
+			<a href="/" aria-current={atual('/')}>Tarefas</a>
+			<a href="/quadro" aria-current={atual('/quadro')}>Quadro</a>
+			<a href="/projetos" aria-current={atual('/projetos')}>Projetos</a>
 		</div>
 	</nav>
 </header>
 
-<main>
+<main id="conteudo" tabindex="-1">
 	{#if navigating.to}
 		<Carregando mensagem="Carregando página..." />
 	{/if}
@@ -41,6 +49,8 @@
 
 	nav {
 		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
 		align-items: center;
 		justify-content: space-between;
 		max-width: 1200px;
@@ -56,6 +66,7 @@
 
 	.menu {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 1.5rem;
 	}
 
@@ -72,5 +83,32 @@
 		max-width: 1200px;
 		margin: 0 auto;
 		padding: 2rem;
+	}
+
+	main:focus {
+		outline: none;
+	}
+
+	.pular-conteudo {
+		position: absolute;
+		left: 1rem;
+		top: -3rem;
+		z-index: 100;
+		padding: 0.5rem 1rem;
+		background: #e8b94a;
+		color: #14102a;
+		font-weight: 700;
+		border-radius: 6px;
+		text-decoration: none;
+	}
+
+	.pular-conteudo:focus {
+		top: 0.5rem;
+	}
+
+	@media (max-width: 40rem) {
+		main {
+			padding: 1rem;
+		}
 	}
 </style>

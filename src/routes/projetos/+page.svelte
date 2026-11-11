@@ -26,6 +26,10 @@
   onMount(carregarProjetos)
 </script>
 
+<svelte:head>
+  <title>Projetos - Zenith</title>
+</svelte:head>
+
 <h1>Lista de projetos</h1>
 <a href="/projetos/novo">+ Novo projeto</a>
 

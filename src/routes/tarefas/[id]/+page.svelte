@@ -73,7 +73,7 @@
   </title>
 </svelte:head>
 
-<main>
+<div class="pagina">
   <a href="/projetos">← Voltar aos projetos</a>
   <h1>Detalhe da tarefa</h1>
 
@@ -135,7 +135,7 @@
       <dd>{tarefa.prazo}</dd>
     </dl>
   {/if}
-</main>
+</div>
 
 <style>
   .acoes {
